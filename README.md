@@ -1,68 +1,71 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# **React Testing Exercises**
 
-## Available Scripts
+This exercise practices working with props, defaultProps, state, and simple click events in React.
 
-In the project directory, you can run:
+Be sure to make a Git repository so you can save your work.
 
-### `npm start`
+## **Carousel Component**
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+You’ve been given a React App containing an image carousel. The app contains a couple of components, and a single test file.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+[react-state-carousel-coins-exercise-starter.zip](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b8ed7254-5138-473b-badb-468420987917/react-state-carousel-coins-exercise-starter.zip)
 
-### `npm test`
+### **Part 1: Demo the App & Read the Code**
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Start the app and play around with the image carousel. Sketch out the component hierarchy and make sure you understand what’s going on. Which components have state, and how does that state get changed?
 
-### `npm run build`
+You may find bugs as you’re exploring the app. Don’t fix them yet!
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### **Part 2: Smoke and Snapshot tests**
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+The *Card* and *Carousel* components don’t have any smoke or snapshot tests. Write one of each type of test for each component.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### **Part 3: Bug! Left arrow**
 
-### `npm run eject`
+As you may have noticed, the left arrow and the right arrow both do the same thing: move to the next image in the image array. Write a (failing) test that checks for this bug. In other words, write a test that expects that when you’re on the second image, clicking the left arrow will move you to the first image. Once you’ve written a failing test, fix the app so that your test turns green.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### **Part 4: Bug! Exhausting the image array**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+As you may have noticed, if you’re on the last image and try to move forward, or if you’re on the first image and try to move backward, you get an error. To fix this, let’s just hide the left arrow on the first image and the right arrow on the last.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Write a (failing) test to check that the left arrow is missing when you’re on the first image, and that the right arrow is missing when you’re on the last image. Then fix the bug so that your test turns green.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## **Further Study: Coin Flip**
 
-## Learn More
+For this part, you will create a coin flipping counter.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The user should be able to click on a button to flip a coin. Every time the user clicks, the coin gets flipped again. The app should also keep track of how many times heads and tails have shown up.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Before building anything, *think about the structure of your React app.* Don’t build this application with a single component: think about how to break your app up into at least two separate components!
 
-### Code Splitting
+Here’s some inspiration:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+![coin.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1c4567e1-1aef-4529-bcda-4bd7b3727517/coin.gif)
 
-### Analyzing the Bundle Size
+### **Tests**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Write tests for your application as well. At a minimum, you should test that there’s no coin image when the page loads, and that the text below the coin updates properly when the coin lands on heads or tails.
 
-### Making a Progressive Web App
+<aside>
+💡 **Testing Randomness**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+Testing random output can be tricky, since it’s unpredictable. Fortunately, Jest comes with functionality to *mock* any function you like, including *Math.random*. One way to handle it is with code like this:
 
-### Advanced Configuration
+```jsx
+beforeEach(function() {
+  jest
+    .spyOn(Math, "random")
+    .mockReturnValueOnce(0.25)
+    .mockReturnValueOnce(0.75);
+});
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+afterEach(function() {
+  Math.random.mockRestore();
+});
+```
 
-### Deployment
+With this code, Jest will ensure that the first call to Math.random() returns 0.25, and the second call will return 0.75. In this way you can make random output completely predictable within your tests.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+For more on this, check out the [Jest docs](https://jestjs.io/docs/en/mock-function-api.html).
 
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+</aside>
